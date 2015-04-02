@@ -9,10 +9,14 @@ package com.xiaoerge.fulltextrss;
  *
  * @author xiaoerge
  */
+import de.jetwick.snacktory.HtmlFetcher;
+import de.jetwick.snacktory.JResult;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
@@ -33,7 +37,7 @@ public class RSSFeedParser {
     static final String PUB_DATE = "pubDate";
     static final String GUID = "guid";
 
-    final URL url;
+    private final URL url;
 
     public RSSFeedParser(String feedUrl) {
         try {
@@ -44,6 +48,10 @@ public class RSSFeedParser {
     }
 
     public RSSFeed readFeed() {
+        return readFeed(0, true);
+    }
+
+    public RSSFeed readFeed(int timeout, boolean resolve) {
         RSSFeed feed = null;
         try {
             boolean isFeedHeader = true;
@@ -112,13 +120,23 @@ public class RSSFeedParser {
                         message.setTitle(title);
                         feed.getMessages().add(message);
                         event = eventReader.nextEvent();
+
+                        //Full text reability 
+                        HtmlFetcher fetcher = new HtmlFetcher();
+
+                        JResult res = fetcher.fetchAndExtract(message.getLink(), timeout, resolve);
+                        String text = res.getText();
+                        //String imageUrl = res.getImageUrl();
+                        message.setDescription(text);
+
                         continue;
                     }
                 }
             }
-        } catch (XMLStreamException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
+
         return feed;
     }
 
