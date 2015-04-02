@@ -16,7 +16,11 @@ public class RSSFeedProgram {
         RSSFeed feed = parser.readFeed();
         System.out.println(feed);
         for (RSSFeedMessage message : feed.getMessages()) {
-            System.out.println(message);
+            
+            if (message.getDescription().length() < 5) {
+                System.out.println(message.getTitle());
+                System.out.println(message.getDescription());
+            }
         }
     }
 }

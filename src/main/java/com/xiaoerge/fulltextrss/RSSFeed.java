@@ -10,6 +10,7 @@ package com.xiaoerge.fulltextrss;
  * @author xiaoerge
  */
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /*
@@ -17,13 +18,13 @@ import java.util.List;
  */
 public class RSSFeed {
 
-    private String title;
-    private String link;
-    private String description;
-    private String language;
-    private String copyright;
-    private String pubDate;
-    private List<RSSFeedMessage> entries = new ArrayList<RSSFeedMessage>();
+    private final String title;
+    private final String link;
+    private final String description;
+    private final String language;
+    private final String copyright;
+    private final String pubDate;
+    private final List<RSSFeedMessage> entries;
 
     public RSSFeed(String title, String link, String description, String language,
             String copyright, String pubDate) {
@@ -33,6 +34,8 @@ public class RSSFeed {
         this.language = language;
         this.copyright = copyright;
         this.pubDate = pubDate;
+        
+        entries = new LinkedList<>();
     }
 
     public List<RSSFeedMessage> getMessages() {

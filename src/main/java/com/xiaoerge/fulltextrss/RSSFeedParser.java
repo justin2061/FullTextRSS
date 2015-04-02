@@ -66,8 +66,7 @@ public class RSSFeedParser {
             while (eventReader.hasNext()) {
                 XMLEvent event = eventReader.nextEvent();
                 if (event.isStartElement()) {
-                    String localPart = event.asStartElement().getName()
-                            .getLocalPart();
+                    String localPart = event.asStartElement().getName().getLocalPart();
                     switch (localPart) {
                         case ITEM:
                             if (isFeedHeader) {
@@ -103,7 +102,7 @@ public class RSSFeedParser {
                             break;
                     }
                 } else if (event.isEndElement()) {
-                    if (event.asEndElement().getName().getLocalPart() == (ITEM)) {
+                    if (event.asEndElement().getName().getLocalPart().equals(ITEM)) {
                         RSSFeedMessage message = new RSSFeedMessage();
                         message.setAuthor(author);
                         message.setDescription(description);
