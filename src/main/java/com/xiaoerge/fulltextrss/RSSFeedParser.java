@@ -59,6 +59,7 @@ public class RSSFeedParser {
 
             // First create a new XMLInputFactory
             XMLInputFactory inputFactory = XMLInputFactory.newInstance();
+            inputFactory.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, true);
             // Setup a new eventReader
             InputStream in = read();
             XMLEventReader eventReader = inputFactory.createXMLEventReader(in);
