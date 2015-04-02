@@ -15,9 +15,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -38,8 +35,14 @@ public class RSSFeedParser {
     static final String GUID = "guid";
 
     private final URL url;
+    private final boolean readability;
 
-    public RSSFeedParser(String feedUrl) {
+    /**
+     * @param feedUrl : RSS URL
+     * @param readability : force full text parsing
+     */
+    public RSSFeedParser(String feedUrl, boolean readability) {
+        this.readability = readability;
         try {
             this.url = new URL(feedUrl);
         } catch (MalformedURLException e) {
@@ -122,12 +125,14 @@ public class RSSFeedParser {
                         event = eventReader.nextEvent();
 
                         //Full text reability 
-                        HtmlFetcher fetcher = new HtmlFetcher();
+                        if (readability) {
+                            HtmlFetcher fetcher = new HtmlFetcher();
 
-                        JResult res = fetcher.fetchAndExtract(message.getLink(), timeout, resolve);
-                        String text = res.getText();
-                        //String imageUrl = res.getImageUrl();
-                        message.setDescription(text);
+                            JResult res = fetcher.fetchAndExtract(message.getLink(), timeout, resolve);
+                            String text = res.getText();
+                            //String imageUrl = res.getImageUrl();
+                            message.setDescription(text);
+                        }
 
                         continue;
                     }

@@ -12,7 +12,7 @@ package com.xiaoerge.fulltextrss;
 public class RSSFeedProgram {
 
     public static void main(String[] args) {
-        RSSFeedParser parser = new RSSFeedParser("http://rss.cnn.com/rss/cnn_topstories.rss");
+        RSSFeedParser parser = new RSSFeedParser("http://rss.cnn.com/rss/cnn_topstories.rss", true);
         RSSFeed feed = parser.readFeed();
         System.out.println(feed);
         for (RSSFeedMessage message : feed.getMessages()) {
